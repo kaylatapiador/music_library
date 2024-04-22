@@ -5,6 +5,7 @@ import SearchBar from './components/SearchBar'
 import AlbumView from './components/AlbumView'
 import ArtistView from './components/ArtistView'
 import { Fragment } from 'react'
+import {redirect} from "react-router-dom"
 
 function App() {
 	let [search, setSearch] = useState('')
@@ -12,7 +13,14 @@ function App() {
 	let [data, setData] = useState([])
 
 	const API_URL = 'https://itunes.apple.com/search?term='
-
+	
+	function titleCase(str){
+			return str.replace(
+				/\w\S*/g, function(txt){
+					return txt.charAt(0).toUpperCase() +txt.substr(1).toLowerCase();
+				}
+			);
+		}
 	useEffect(() => {
 		if(search) {
 			const fetchData = async () => {
@@ -28,10 +36,13 @@ function App() {
 			fetchData()
 		}
 	}, [search])
+
 	
 	const handleSearch = (e, term) => {
 		e.preventDefault()
+		term = titleCase(term)
 		setSearch(term)
+		return (<Redirect to="/" />)
 	}
 
 	return (
